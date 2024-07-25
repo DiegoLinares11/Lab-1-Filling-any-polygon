@@ -122,6 +122,39 @@ fn main() {
     ];
     draw_polygon(&mut framebuffer, &polygon3, Color::new(255, 255, 255), Color::new(255, 0, 0));
 
+
+    // Poligono 4: verde con orilla blanca
+    let polygon4 = vec![
+    Vertex::new(413.0, 177.0, 0.0),
+    Vertex::new(448.0, 159.0, 0.0),
+    Vertex::new(502.0, 88.0, 0.0),
+    Vertex::new(553.0, 53.0, 0.0),
+    Vertex::new(535.0, 36.0, 0.0),
+    Vertex::new(676.0, 37.0, 0.0),
+    Vertex::new(660.0, 52.0, 0.0),
+    Vertex::new(750.0, 145.0, 0.0),
+    Vertex::new(761.0, 179.0, 0.0),
+    Vertex::new(672.0, 192.0, 0.0),
+    Vertex::new(659.0, 214.0, 0.0),
+    Vertex::new(615.0, 214.0, 0.0),
+    Vertex::new(632.0, 230.0, 0.0),
+    Vertex::new(580.0, 230.0, 0.0),
+    Vertex::new(597.0, 215.0, 0.0),
+    Vertex::new(552.0, 214.0, 0.0),
+    Vertex::new(517.0, 144.0, 0.0),
+    Vertex::new(466.0, 180.0, 0.0),
+    ];
+    draw_polygon(&mut framebuffer, &polygon4, Color::new(255, 255, 255), Color::new(0, 255, 0));
+
+    // Poligono 5: agujero en el polígono 4
+    let polygon5 = vec![
+    Vertex::new(682.0, 175.0, 0.0),
+    Vertex::new(708.0, 120.0, 0.0),
+    Vertex::new(735.0, 148.0, 0.0),
+    Vertex::new(739.0, 170.0, 0.0),
+    ];
+    draw_polygon(&mut framebuffer, &polygon5, Color::new(255, 255, 255), Color::new(0, 0, 0));
+
     
     framebuffer.write_bmp_file("out.bmp").expect("Failed to write BMP file");
 }
