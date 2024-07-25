@@ -113,7 +113,6 @@ fn main() {
     Vertex::new(374.0, 302.0, 0.0),
     ];
     draw_polygon(&mut framebuffer, &polygon2, Color::new(255, 255, 255), Color::new(0, 0, 255));
-
     
     framebuffer.write_bmp_file("out.bmp").expect("Failed to write BMP file");
 }
