@@ -114,6 +114,14 @@ fn main() {
     ];
     draw_polygon(&mut framebuffer, &polygon2, Color::new(255, 255, 255), Color::new(0, 0, 255));
 
+    // Poligono 3: rojo con orilla blanca
+    let polygon3 = vec![
+    Vertex::new(377.0, 249.0, 0.0),
+    Vertex::new(411.0, 197.0, 0.0),
+    Vertex::new(436.0, 249.0, 0.0),
+    ];
+    draw_polygon(&mut framebuffer, &polygon3, Color::new(255, 255, 255), Color::new(255, 0, 0));
+
     
     framebuffer.write_bmp_file("out.bmp").expect("Failed to write BMP file");
 }
