@@ -1,4 +1,6 @@
 target/
 *.rs.bk
-*.bmp
+lines.bmp
+output.bmp
+polygons.bmp
 Cargo.lock
