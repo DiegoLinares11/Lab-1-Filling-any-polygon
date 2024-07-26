@@ -108,6 +108,12 @@ mod tests {
         assert_eq!(multiplied_color.blue(), 255);
     }
 }
+impl Color {
+    pub fn to_u32(&self) -> u32 {
+        ((self.red as u32) << 16) | ((self.green as u32) << 8) | (self.blue as u32)
+    }
+}
+
 
 //Si quiero volver a comentar es Ctrl+k seguido de Ctrl+C
 //Si quiero descomentar todo a la vez puedo usar Ctrl+ k seguido de Ctrl + u

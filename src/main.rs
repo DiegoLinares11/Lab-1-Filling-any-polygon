@@ -1,15 +1,18 @@
+use minifb::{Key, Window, WindowOptions};
+use std::time::Duration;
+use nalgebra_glm as glm;
+
+mod color;
 mod framebuffer;
 mod line;
 mod bmp;
 mod vertex;
-mod color;
 
 use framebuffer::Framebuffer;
 use line::Line;
 use bmp::BmpWritable;
 use vertex::Vertex;
 use color::Color;
-use nalgebra_glm as glm;
 
 fn draw_polygon(framebuffer: &mut Framebuffer, vertices: &[Vertex], line_color: Color, fill_color: Color) {
     framebuffer.set_current_color(fill_color);
@@ -83,13 +86,27 @@ fn fill_polygon(framebuffer: &mut Framebuffer, vertices: &[Vertex]) {
 }
 
 fn main() {
-    let width = 800;
-    let height = 600;
-    let mut framebuffer = Framebuffer::new(width, height, Color::new(0, 0, 0));
+    let window_width = 800;
+    let window_height = 600;
+    let framebuffer_width = 800;
+    let framebuffer_height = 600;
 
-    framebuffer.set_background_color(Color::new(0, 0, 0));
+    let close_delay = Duration::from_secs(10);
+
+    let mut framebuffer = Framebuffer::new(framebuffer_width, framebuffer_height, Color::new(0, 0, 0));
+
+    let mut window = Window::new(
+        "Rust Graphics - Framebuffer Example",
+        window_width,
+        window_height,
+        WindowOptions::default(),
+    ).unwrap();
+
+    // Clear the framebuffer
+    framebuffer.set_background_color(Color::new(0x33, 0x33, 0x55));
     framebuffer.clear();
 
+    // Draw some polygons
     // Poligono 1: amarillo con orilla blanca
     let polygon1 = vec![
         Vertex::new(165.0, 380.0, 0.0),
@@ -107,54 +124,61 @@ fn main() {
 
     // Poligono 2: azul con orilla blanca
     let polygon2 = vec![
-    Vertex::new(321.0, 335.0, 0.0),
-    Vertex::new(288.0, 286.0, 0.0),
-    Vertex::new(339.0, 251.0, 0.0),
-    Vertex::new(374.0, 302.0, 0.0),
+        Vertex::new(321.0, 335.0, 0.0),
+        Vertex::new(288.0, 286.0, 0.0),
+        Vertex::new(339.0, 251.0, 0.0),
+        Vertex::new(374.0, 302.0, 0.0),
     ];
     draw_polygon(&mut framebuffer, &polygon2, Color::new(255, 255, 255), Color::new(0, 0, 255));
 
     // Poligono 3: rojo con orilla blanca
     let polygon3 = vec![
-    Vertex::new(377.0, 249.0, 0.0),
-    Vertex::new(411.0, 197.0, 0.0),
-    Vertex::new(436.0, 249.0, 0.0),
+        Vertex::new(377.0, 249.0, 0.0),
+        Vertex::new(411.0, 197.0, 0.0),
+        Vertex::new(436.0, 249.0, 0.0),
     ];
     draw_polygon(&mut framebuffer, &polygon3, Color::new(255, 255, 255), Color::new(255, 0, 0));
 
-
     // Poligono 4: verde con orilla blanca
     let polygon4 = vec![
-    Vertex::new(413.0, 177.0, 0.0),
-    Vertex::new(448.0, 159.0, 0.0),
-    Vertex::new(502.0, 88.0, 0.0),
-    Vertex::new(553.0, 53.0, 0.0),
-    Vertex::new(535.0, 36.0, 0.0),
-    Vertex::new(676.0, 37.0, 0.0),
-    Vertex::new(660.0, 52.0, 0.0),
-    Vertex::new(750.0, 145.0, 0.0),
-    Vertex::new(761.0, 179.0, 0.0),
-    Vertex::new(672.0, 192.0, 0.0),
-    Vertex::new(659.0, 214.0, 0.0),
-    Vertex::new(615.0, 214.0, 0.0),
-    Vertex::new(632.0, 230.0, 0.0),
-    Vertex::new(580.0, 230.0, 0.0),
-    Vertex::new(597.0, 215.0, 0.0),
-    Vertex::new(552.0, 214.0, 0.0),
-    Vertex::new(517.0, 144.0, 0.0),
-    Vertex::new(466.0, 180.0, 0.0),
+        Vertex::new(413.0, 177.0, 0.0),
+        Vertex::new(448.0, 159.0, 0.0),
+        Vertex::new(502.0, 88.0, 0.0),
+        Vertex::new(553.0, 53.0, 0.0),
+        Vertex::new(535.0, 36.0, 0.0),
+        Vertex::new(676.0, 37.0, 0.0),
+        Vertex::new(660.0, 52.0, 0.0),
+        Vertex::new(750.0, 145.0, 0.0),
+        Vertex::new(761.0, 179.0, 0.0),
+        Vertex::new(672.0, 192.0, 0.0),
+        Vertex::new(659.0, 214.0, 0.0),
+        Vertex::new(615.0, 214.0, 0.0),
+        Vertex::new(632.0, 230.0, 0.0),
+        Vertex::new(580.0, 230.0, 0.0),
+        Vertex::new(597.0, 215.0, 0.0),
+        Vertex::new(552.0, 214.0, 0.0),
+        Vertex::new(517.0, 144.0, 0.0),
+        Vertex::new(466.0, 180.0, 0.0),
     ];
     draw_polygon(&mut framebuffer, &polygon4, Color::new(255, 255, 255), Color::new(0, 255, 0));
 
     // Poligono 5: agujero en el polígono 4
     let polygon5 = vec![
-    Vertex::new(682.0, 175.0, 0.0),
-    Vertex::new(708.0, 120.0, 0.0),
-    Vertex::new(735.0, 148.0, 0.0),
-    Vertex::new(739.0, 170.0, 0.0),
+        Vertex::new(682.0, 175.0, 0.0),
+        Vertex::new(708.0, 120.0, 0.0),
+        Vertex::new(735.0, 148.0, 0.0),
+        Vertex::new(739.0, 170.0, 0.0),
     ];
-    draw_polygon(&mut framebuffer, &polygon5, Color::new(255, 255, 255), Color::new(0, 0, 0));
+    draw_polygon(&mut framebuffer, &polygon5, Color::new(10, 10, 255), Color::new(0, 0, 0));
 
-    
-    framebuffer.write_bmp_file("out.bmp").expect("Failed to write BMP file");
+    // Bucle principal para renderizar la ventana
+    while window.is_open() && !window.is_key_down(Key::Escape) {
+        let buffer: Vec<u32> = framebuffer
+            .get_buffer()
+            .iter()
+            .map(|color| color.to_u32())
+            .collect();
+
+        window.update_with_buffer(&buffer, framebuffer_width, framebuffer_height).unwrap();
+    }
 }
