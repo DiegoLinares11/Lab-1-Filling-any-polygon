@@ -6,6 +6,10 @@ Para el cuarto branch fusionamos dos dibujos, uno grande y verde con orilla blan
 
 #  Demostracion del Games of life
 
-## Demostración en GIF
+## Demostración en GIF 
 
 ![Muestra de 10 patrones que eligen una posicion random, corriendo en simultaneo en una ventana](VisualOutputs/Conway´s-Game-of-Life.gif)
+
+
+## GIF del branch TrenPuffer
+![Muestra del movimiento del TrenPuffer](VisualOutputs/TrenPuffer.gif)

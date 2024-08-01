@@ -153,3 +153,21 @@ pub fn initialize_pentadecathlon(board: &mut Vec<Vec<u8>>, x: usize, y: usize) {
         }
     }
 }
+
+pub fn initialize_puffer_train(board: &mut Vec<Vec<u8>>, x: usize, y: usize) {
+    let puffer_train_pattern = vec![
+        (0, 2), (0, 3), (0, 4), (0, 6), (0, 7),
+        (1, 1), (1, 5), (1, 8),
+        (2, 0), (2, 1), (2, 5), (2, 9),
+        (3, 0), (3, 5), (3, 9),
+        (4, 5), (4, 9),
+        (5, 1), (5, 5), (5, 8),
+        (6, 1), (6, 2), (6, 3), (6, 4), (6, 6), (6, 7), (6, 8),
+    ];
+
+    for (dx, dy) in puffer_train_pattern {
+        if y + dy < board.len() && x + dx < board[0].len() {
+            board[y + dy][x + dx] = 1;
+        }
+    }
+}

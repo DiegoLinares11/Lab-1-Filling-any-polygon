@@ -1,12 +1,7 @@
 use minifb::{Key, Window, WindowOptions};
 use std::time::Duration;
-use nalgebra_glm as glm;
 use rand::Rng;
-use patterns::{
-    initialize_block, initialize_blinker, initialize_toad, initialize_beacon, initialize_pulsar,
-    initialize_glider, initialize_spaceship, initialize_glider_gun, initialize_beehive,
-    initialize_pentadecathlon,
-};
+use patterns::{initialize_block, initialize_blinker, initialize_toad, initialize_beacon, initialize_pulsar, initialize_glider, initialize_spaceship, initialize_glider_gun};
 
 mod color;
 mod framebuffer;
@@ -21,7 +16,7 @@ use bmp::BmpWritable;
 use vertex::Vertex;
 use color::Color;
 
-fn render(framebuffer: &mut Framebuffer, board: &mut Vec<Vec<u8>>) {
+fn render(framebuffer: &mut Framebuffer, board: &mut Vec<Vec<u8>>, current_color: Color) {
     let width = framebuffer.width as isize;
     let height = framebuffer.height as isize;
 
@@ -35,11 +30,9 @@ fn render(framebuffer: &mut Framebuffer, board: &mut Vec<Vec<u8>>) {
                     if dy == 0 && dx == 0 {
                         continue;
                     }
-                    let ny = y + dy;
-                    let nx = x + dx;
-                    if ny >= 0 && ny < height && nx >= 0 && nx < width {
-                        live_neighbors += board[ny as usize][nx as usize];
-                    }
+                    let ny = (y + dy + height) % height;
+                    let nx = (x + dx + width) % width;
+                    live_neighbors += board[ny as usize][nx as usize];
                 }
             }
 
@@ -55,9 +48,9 @@ fn render(framebuffer: &mut Framebuffer, board: &mut Vec<Vec<u8>>) {
     for y in 0..height {
         for x in 0..width {
             if next_board[y as usize][x as usize] == 1 {
-                framebuffer.set_current_color(Color::new(220, 147, 30)); // Yellow for live cells
+                framebuffer.set_current_color(current_color);
             } else {
-                framebuffer.set_current_color(Color::new(48, 25, 52)); // Purple for dead cells
+                framebuffer.set_current_color(Color::new(0, 0, 0));
             }
             framebuffer.point(x, y);
         }
@@ -67,8 +60,8 @@ fn render(framebuffer: &mut Framebuffer, board: &mut Vec<Vec<u8>>) {
 }
 
 fn main() {
-    let window_width = 500;
-    let window_height = 400;
+    let window_width = 150;
+    let window_height = 100;
     let mut framebuffer = Framebuffer::new(window_width, window_height, Color::new(0, 0, 0));
 
     let mut window = Window::new(
@@ -78,26 +71,34 @@ fn main() {
         WindowOptions::default(),
     ).unwrap();
 
-    // Initialize the board with some random live cells
+    // Initialize the board with some fixed patterns
     let mut board = vec![vec![0u8; window_width]; window_height];
-    
-    // Distribuir los patrones en toda la pantalla
+    initialize_block(&mut board, 10, 10);
+    initialize_blinker(&mut board, 50, 50);
+    initialize_toad(&mut board, 80, 80);
+    initialize_beacon(&mut board, 120, 120);
+    initialize_pulsar(&mut board, 150, 150);
+    initialize_glider(&mut board, 200, 200);
+    initialize_spaceship(&mut board, 250, 250);
+
+    let mut glider_gun_position = (10, 10);
     let mut rng = rand::thread_rng();
-    for _ in 0..30 {
-        initialize_block(&mut board, rng.gen_range(0..window_width), rng.gen_range(0..window_width));
-        initialize_blinker(&mut board, rng.gen_range(0..window_width), rng.gen_range(0..window_height));
-        initialize_toad(&mut board, rng.gen_range(0..window_width), rng.gen_range(0..window_height));
-        initialize_beacon(&mut board, rng.gen_range(0..window_width), rng.gen_range(0..window_height));
-        initialize_pulsar(&mut board, rng.gen_range(0..window_width), rng.gen_range(0..window_height));
-        initialize_glider(&mut board, rng.gen_range(0..window_width), rng.gen_range(0..window_height));
-        initialize_spaceship(&mut board, rng.gen_range(0..window_width), rng.gen_range(0..window_height));
-        initialize_glider_gun(&mut board, rng.gen_range(0..window_width), rng.gen_range(0..window_height));
-        initialize_beehive(&mut board, rng.gen_range(0..window_width), rng.gen_range(0..window_height));
-        initialize_pentadecathlon(&mut board, rng.gen_range(0..window_width), rng.gen_range(0..window_height));
-    }
+    let mut current_color = Color::new(255, 255, 0);
 
     while window.is_open() && !window.is_key_down(Key::Escape) {
-        render(&mut framebuffer, &mut board);
+        render(&mut framebuffer, &mut board, current_color);
+
+        // Mover el "Glider Gun" más rápido
+        if glider_gun_position.0 >= window_width {
+            glider_gun_position.0 = 0;
+            glider_gun_position.1 += 40; // Mueve el glider gun hacia abajo
+            current_color = Color::new(rng.gen_range(10..255), rng.gen_range(10..255), rng.gen_range(30..255));
+        }
+        if glider_gun_position.1 >= window_height {
+            glider_gun_position.1 = 0;
+        }
+        initialize_glider_gun(&mut board, glider_gun_position.0, glider_gun_position.1);
+        glider_gun_position.0 += 5; // Aumentar la velocidad de movimiento
 
         let buffer: Vec<u32> = framebuffer
             .get_buffer()
@@ -107,6 +108,6 @@ fn main() {
 
         window.update_with_buffer(&buffer, window_width, window_height).unwrap();
 
-        std::thread::sleep(Duration::from_millis(100));
+        std::thread::sleep(Duration::from_millis(50)); // Reducir el tiempo de espera entre frames
     }
 }
