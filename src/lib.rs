@@ -1,8 +1,10 @@
-mod color;
-mod framebuffer;
-mod bmp;
-mod line;
-mod vertex;
+pub mod board;
+pub mod patterns;
+pub mod framebuffer;
+pub mod vertex;
+pub mod color;
+pub mod line;
+pub mod bmp;
 
 pub use color::Color;
 pub use framebuffer::Framebuffer;
