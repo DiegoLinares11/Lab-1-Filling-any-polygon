@@ -1,4 +1,3 @@
-pub mod board;
 pub mod patterns;
 pub mod framebuffer;
 pub mod vertex;
