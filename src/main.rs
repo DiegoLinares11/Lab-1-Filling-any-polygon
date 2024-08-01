@@ -67,8 +67,8 @@ fn render(framebuffer: &mut Framebuffer, board: &mut Vec<Vec<u8>>) {
 }
 
 fn main() {
-    let window_width = 400;
-    let window_height = 300;
+    let window_width = 500;
+    let window_height = 400;
     let mut framebuffer = Framebuffer::new(window_width, window_height, Color::new(0, 0, 0));
 
     let mut window = Window::new(
@@ -83,7 +83,7 @@ fn main() {
     
     // Distribuir los patrones en toda la pantalla
     let mut rng = rand::thread_rng();
-    for _ in 0..10 {
+    for _ in 0..30 {
         initialize_block(&mut board, rng.gen_range(0..window_width), rng.gen_range(0..window_width));
         initialize_blinker(&mut board, rng.gen_range(0..window_width), rng.gen_range(0..window_height));
         initialize_toad(&mut board, rng.gen_range(0..window_width), rng.gen_range(0..window_height));
